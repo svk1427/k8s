@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:    
+    type: Recreate   #recreate meansappudaitey db pod delete/kill ipoddo db pod okati kothhadhi create cheymani ardam edhi ebs lo db itey 1 vuntadi antey
+  template: 
+    metadata: 
+      labels: 
+        app: mysql
+    spec: 
+      containers:
+        - name: mysql
+          image: mysql:5.6
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: dbpassword11
+          ports:
+            - containerPort: 3306
+              name: mysql    
+          volumeMounts:
+            - name: mysql-persistent-storage    
+              mountPath: /var/lib/mysql      
+            - name: usermanagement-dbcreation-script
+              mountPath: /docker-entrypoint-initdb.d #https://hub.docker.com/_/mysql Refer Initializing a fresh instance                                            
+      volumes:  # e section lo mysql pod tho paatu volumes create avuthai antey kani vatini ah containers tho mount avvadaniki volumemounts use chestam.
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:    
+            claimName: ebs-mysql-pv-claim  #name must and should be same as you given in persistent volume metadata section.
+        - name: usermanagement-dbcreation-script #name must and should be same as you given in usrmngmt configmap metadata section.
+          configMap:
+            name: usermanagement-dbcreation-script #name must and should be same as you given in usrmngmt configmap metadata section.
+
+#it means the above mysql pod can create along with ebs volume
