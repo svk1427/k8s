@@ -1,0 +1,15 @@
+apiVersion: v1 # String
+kind: Pod  # String
+metadata: # Dictionary
+  name: myapp-pod
+  labels: # Dictionary 
+    app: myapp    #edhi manam create chesina pod name, so e name ni service create chesinappudu pod name ga thiskuntam, antey service exact ga ea pod ki vellalo ani     
+spec:
+  containers: # List
+    - name: myapp
+      image: stacksimplify/kubenginx:1.0.0
+      ports:
+        - containerPort: 80
+
+
+    
