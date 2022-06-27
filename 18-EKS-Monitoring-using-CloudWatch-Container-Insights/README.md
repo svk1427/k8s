@@ -1,3 +1,23 @@
+Logging and monitoring:
+========================
+2 ways of logging
+1.eks control plane logging
+  - k8s api
+  - audit
+  - authenticator
+  - controllmanager
+  - scheduler
+2.eks workernodes logging
+  - system logs like kubelet, kubeproxy and dockerd
+  - app logs from ap cpntainers
+
+If we maintain logs in ebs , if node crash we lost al our logs
+
+
+
+
+
+
 # Monitoring EKS using CloudWatch Container Insigths
 
 ## Step-01: Introduction

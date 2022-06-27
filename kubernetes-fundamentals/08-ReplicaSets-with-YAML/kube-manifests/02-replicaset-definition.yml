@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp2-rs #metadata is just a name of replicaset 
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp2
+  template:  #this is the section for defining pod
+    metadata: # Dictionary
+      name: myapp2-pod
+      labels: # Dictionary 
+        app: myapp2         
+    spec:
+      containers: # List
+        - name: myapp2-container
+          image: stacksimplify/kubenginx:2.0.0
+          ports:
+            - containerPort: 80
+
+
+#here template esction means it's copy/same of your pod file from "metadata" section

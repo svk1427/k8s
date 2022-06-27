@@ -1,3 +1,8 @@
+#clusterip service file used to distribute the application to both deployments(04,08-v2) 
+#seperate ga ea commands run cheyyam 50/50 load traffic share avvadaniki
+#here notification restapp is the  common name to generate load to specific pods using yml files.
+
+
 # Microservices Canary Deployments 
 
 ## Step-01: Introduction
