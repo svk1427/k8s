@@ -19,7 +19,7 @@ spec:
           image: mysql:5.6
           env:
             - name: MYSQL_ROOT_PASSWORD #this root password is geetting from secret file metadataname and dbpassword name
-              valueFrom:
+              valueFrom: #these lines we are getting from secret file
                 secretKeyRef: 
                   name: mysql-db-password
                   key: db-password 

@@ -4,15 +4,15 @@ metadata:
   name: usermgmt-microservice
   labels:
     app: usermgmt-restapp
-spec:
+spec: #here spec has 3 core child elements 1.replicas 2.container 3.template
   replicas: 1
   selector:
     matchLabels:
-      app: usermgmt-restapp
-  template:  
+      app: usermgmt-restapp #e name same as template section lo labels app name
+  template:  #template is nothing but pod template define po in this section,  child elements are metada and spec
     metadata:
       labels: 
-        app: usermgmt-restapp
+        app: usermgmt-restapp #selector mathchlabels lo vunna name ea ekakda evvali
     spec:
       containers:
         - name: usermgmt-restapp

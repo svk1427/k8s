@@ -2,6 +2,6 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata: 
   name: ebs-sc
-provisioner: ebs.csi.aws.com
+provisioner: ebs.csi.aws.com #for SC this is provisioner not spec
 volumeBindingMode: WaitForFirstConsumer #edhi endukantey eppuddaitey pod create avutado apppudey volume create avuthadi lekapotey zones issues osthai,this kind
 #of problems will ovewrcome with AWS RDS  ..... ebs storage apply cheyyali antey nodes ki mundu dhanini eks lo install cheyyali

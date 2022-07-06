@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: usermgmt-restapp-service
   labels: 
-    app: usermgmt-restapp #send the request as per the pod/cpntainer name
+    app: usermgmt-restapp 
 spec:
   type: NodePort
   selector:
-    app: usermgmt-restapp
+    app: usermgmt-restapp  #send the request as per the pod/cpntainer nam, so here usermgmt-restapp service ki ochina traffic ni selector lo vunna pod app tho check chestadi rendu equal itey ah trafffic  ni ah particular pod ki forward chestadi
   ports: 
     - port: 8095
       targetPort: 8095

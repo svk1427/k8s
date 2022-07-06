@@ -2,20 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
-spec: 
+spec:     #under spec we have 3 top level objects 1.replicas,2.selector,3.template and someties 4.strategy
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: mysql  #line.9 and line.15 mysql name must and should be same
   strategy:    
-    type: Recreate   #recreate meansappudaitey db pod delete/kill ipoddo db pod okati kothhadhi create cheymani ardam edhi ebs lo db itey 1 vuntadi antey
-  template: 
+    type: Recreate   #recreate means appudaitey db pod delete/kill ipoddo db pod okati kothhadhi create cheymani ardam edhi ebs lo db itey 1 vuntadi antey
+  template: #template has 2 top objects 1.metadata, 2.spec
     metadata: 
       labels: 
-        app: mysql
-    spec: 
+        app: mysql 
+    spec:  #here spec has 2 child elements 1.continer 2.volumes
       containers:
-        - name: mysql
+        - name: mysql #name of the container
           image: mysql:5.6
           env:
             - name: MYSQL_ROOT_PASSWORD
@@ -29,7 +29,7 @@ spec:
             - name: usermanagement-dbcreation-script
               mountPath: /docker-entrypoint-initdb.d #https://hub.docker.com/_/mysql Refer Initializing a fresh instance                                            
       volumes:  # e section lo mysql pod tho paatu volumes create avuthai antey kani vatini ah containers tho mount avvadaniki volumemounts use chestam.
-        - name: mysql-persistent-storage
+        - name: mysql-persistent-storage  
           persistentVolumeClaim:    
             claimName: ebs-mysql-pv-claim  #name must and should be same as you given in persistent volume metadata section.
         - name: usermanagement-dbcreation-script #name must and should be same as you given in usrmngmt configmap metadata section.

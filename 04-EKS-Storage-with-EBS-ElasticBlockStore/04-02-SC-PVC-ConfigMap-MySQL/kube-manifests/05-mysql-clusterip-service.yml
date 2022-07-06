@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata: 
   name: mysql
-spec:
+spec: #here spech has 3 top level objjects 1.selector,2.ports,3.clusterip
   selector:
     app: mysql 
   ports: 

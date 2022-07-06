@@ -12,6 +12,6 @@ spec:
       targetPort: 80 # Container Port
       nodePort: 31231 # NodePort
 
-#manam eadaite "selector app" lo echamo adhi manam pod loni "labels app" section nundi techukunnam
+#manam service file lo eadaite "selector app" lo echamo adhi manam pod loni "labels app" section nundi techukunnam
 #edhi enduku antey service create chesinappudu ah service based on the selector lo vunna name ki traffic provide chestadi
 #ah "selectorapp" lo vunna name and pod file lo vunna "labels app" tho match cheskoni equal itey ah particular pod ki traffic provide chestadi.

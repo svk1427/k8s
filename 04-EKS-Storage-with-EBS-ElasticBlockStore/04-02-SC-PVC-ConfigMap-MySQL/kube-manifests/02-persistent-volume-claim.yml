@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ebs-mysql-pv-claim
-spec: 
+spec:  #for persistence vol claim spec section has 3 high level modules,1.accessMode,2.storageclassname,3.resources
   accessModes:
     - ReadWriteOnce
   storageClassName: ebs-sc #this is the line to get the storage class and same name as metadata section

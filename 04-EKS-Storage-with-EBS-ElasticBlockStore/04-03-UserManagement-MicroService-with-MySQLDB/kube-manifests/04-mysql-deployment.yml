@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
-spec: 
+  name: mysql #name of the deployment
+spec:    #under spec we have 3 top level objects 1.replicas,2.selector,3.template and someties 4.strategy
   replicas: 1
   selector:
     matchLabels:
       app: mysql
   strategy:
     type: Recreate 
-  template: 
+  template:  #in template 2 top level objects: 1.metadata,2.spec
     metadata: 
       labels: 
         app: mysql
-    spec: 
+    spec:  
       containers:
         - name: mysql
           image: mysql:5.6
@@ -35,3 +35,4 @@ spec:
         - name: usermanagement-dbcreation-script
           configMap:
             name: usermanagement-dbcreation-script
+
