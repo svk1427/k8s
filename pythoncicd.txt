@@ -1,3 +1,420 @@
+Nodejs api CRUD apps:
+=====================
+https://github.com/CodAffection/Node.js-Expess-MongoDB-CRUD - working
+
+Laravel api CRUD apps:
+=======================
+https://github.com/SinghDigamber/laravel-crud-app.git - working
+
+Python api CRUD apps:
+=====================
+https://github.com/CodAffection/Django-CRUD-Operations.git - working
+
+===============================================================================================
+Deploy Nodejs-mongo API Applications on AWS servers:
+
+-> setup aws ec2 amazon linux
+-> install nodejs and mongodb
+-> make some db settings in mongo config file
+-> clone the project to /var/www/html/
+-> create db manually in ROBO3t
+-> npm install //to install dependecies
+-> node server.js //to run app on 80
+If you want to run app dynamically use pm2 
+-> npm i -g pm2 //install pm2 dependencies
+-> pm2 start server.js //start the server with end process
+
+setup node and mongodb in both servers
+setup pm2 in both server
+setup jenkins server
+go to stage and prod servers seperately and do some below settings in conf files
+vi /etc/httpd/conf.d/demo.conf
+<VirtualHost *:80>
+      ServerName 44.204.20.226
+
+      ProxyPreserveHost On
+      ProxyPass / http://44.204.20.226:3000/
+      ProxyPassReverse / http://44.204.20.226:3000/
+
+It means app internally run on 3000 port
+but depends upon above conf, app will be show on port 80 to outside world
+neeed to setup tis conf in both stage and prod servers
+then restart the httpd service
+========================================================================================================================
+
+Deploy Laravel API Applications on AWS servers:
+
+-> setup aws ec2 amazon linux
+-> Setup LAMP server
+-> make some changes in httpd conf file
+-> clone the project form github
+-> setup composer with link and install composer
+-> db migrate and key geenerate
+-> give permissions to storage file
+-> access website in browser
+
+URL : http://ip/students/create
+
+Create Student: http://127.0.0.1:8000/students/create
+
+Students List: http://127.0.0.1:8000/students
+=======================================================================================================================================
+Deploying Python Application on AWS EC2
+
+-> Install amazon t2.micro ansible server
+install ansible
+install pip
+install pip docker-py is used to exec docker cmnds in ansible server and build docker images
+
+
+server {
+    listen 80;
+    server_name 35.154.239.59;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ec2-user/polling;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+========================================================================================================================================
+
+Deploying Laravel Application on AWS EC2
+Reference
+
+Launch the instance
+Select Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type
+
+Configure Security Group
+Add rule of HTTP and HTTPS
+
+Launch Amazon RDS Database
+Create new RDS database. Fill up the form and save.
+
+After that navigate to Security Groups under Network & Security on the EC2 dashboard and click the Create Security Group button.
+
+Create security group with a MYSQL/Aurora rule that opens port 3306 access. Select Anywhere as source, then click Create.
+
+Connect to EC2 Instance via SSH
+ ssh -i <filename.pem> ec2-user@<public_ip>
+Install Apache
+sudo su
+yum update -y
+
+yum install httpd24 -y
+yum install php72 php72-mysqlnd php72-imap php72-pecl-memcache php72-pecl-apcu php72-gd php72-mbstring -y
+yum install mod24_ssl -y
+
+service httpd start
+Check by visiting to your public ip in the browser
+
+chkconfig —add httpd
+chkconfig httpd on
+Install Git
+yum install git -y
+Install Composer && Laravel
+Composer
+
+yum install wget -y
+wget https://getcomposer.org/composer.phar
+Verify Composer
+
+php composer.phar
+Install Laravel (Optional)
+
+php composer.phar global require laravel/installer
+If has error PHP Composer update “cannot allocate memory” error
+
+/bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+/sbin/mkswap /var/swap.1
+/sbin/swapon /var/swap.1
+cd to apache folder
+cd /var/www/html
+Create or Clone Project
+Clone
+
+git clone <git_url>
+Edit .htaccess
+
+vim /var/www/html/laravel/public/.htaccess
+Add RewriteBase / just below RewriteEngine On
+
+Configure .env. Supply the database host, name, username and password base on the created rds database
+
+mv .env.example .env
+vim .env
+Edit config /etc/httpd/conf/httpd.conf and add the following at the bottom of the file
+
+Alias / /var/www/html/<project_folder_name>/public/
+<Directory "/var/www/html/<project_folder_name>/public">
+        AllowOverride All
+        Order allow,deny
+        allow from all
+</Directory>
+Give write access to storage folder
+
+sudo chmod -R 777 /var/www/html/laravel/storage
+sudo chmod -R 777 /var/www/html/laravel/storage/logs
+Restart Apache
+
+service httpd restart
+cd /var/www/html/laravel
+Migrate
+
+php artisan migrate
+
+
+<Ifmodule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+=========================================================================================================================================
+IMP DOC:
+https://www.hackerxone.com/2021/04/28/install-composer-amazon-linux-running-ec2/
+====================================================================================================
+Deploy Django python API CRUD APP in local
+
+python manage.py migrate
+
+create tables in db - python manage.py sqlmigrate employee_register 0001
+not working now, run below commands to make work perfectly
+
+IMP commands to run postgresql:
+==============================
+-> pg_ctl.exe restart -D  "C:\Program Files\PostgreSQL\14\data" - For server starting
+-> psql -U postgres -h localhost employeedb - login to postgresql db 
+-> \list - list of dbs
+-> \dt - list of tables
+-> INSERT INTO employee_register_position (id, title) VALUES (4, 'Programming Python'); - insert data to table
+
+
+pm2 command golbal ga run avvali antey - means not root user $ - 
+also solution for Eaccess permission denied issue
+
+sudo apt-get install libcap2-bin
+
+NODEJS CRUD API CI/CD PIPLEINE USINF JENKINS:(Version2)
+============================================
+setup node and mongodb in both servers
+setup pm2 in both server
+setup jenkins server
+go to stage and prod servers seperately and do some below settings in conf files
+vi /etc/httpd/conf.d/demo.conf
+<VirtualHost *:80>
+      ServerName 44.204.20.226
+
+      ProxyPreserveHost On
+      ProxyPass / http://44.204.20.226:3000/
+      ProxyPassReverse / http://44.204.20.226:3000/
+
+It means app internally run on 3000 port
+but depends upon above conf, app will be show on port 80 to outside world
+neeed to setup tis conf in both stage and prod servers
+then restart the httpd service
+
+now setup pipleine job in jenkins
+add below code to deploy automatically from jenkins to stage-> stage-> prod server
+
+pipeline {
+    agent any
+    environment {
+        // comment added
+         APPLICATION = 'app'
+         ENVIRONMENT = 'dev'
+         MAINTAINER_NAME = 'jenkins'
+         MAINTAINER_EMAIL = 'jenkins@email.com'
+    }
+    stages {
+        stage('clone repository') {
+            steps {
+                git credentialsId: 'git-credentials', url: 'https://github.com/svk1427/Node.js-Expess-MongoDB-CRUD.git'
+             }
+         }
+        stage('Build'){
+             steps {
+                 nodejs(nodeJSInstallationName: 'nodejs15.2.1') {
+                 sh 'npm install'
+                }
+            }
+        }
+        stage('copy to files to stage server') {
+             steps {
+                 script {
+                     sshagent(['deployserver-key-cred']) {
+                        //sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Nodejs-CI-CD/*  ec2-user@44.204.20.226:/var/www/html/'
+                        sh 'rsync -avz -e ssh /var/lib/jenkins/workspace/Nodejs-CI-CD/* ec2-user@44.204.20.226:/var/www/html/'
+                    }
+                 }
+             }
+         }
+        stage('deploy to stage server') {
+            steps {
+                script {
+                   sshagent(['deployserver-key-cred']) {
+                         sh """ssh ec2-user@44.204.20.226 << EOF
+                         cd /var/www/html/project
+                         npm install
+                         npm i -g pm2
+                         pm2 start -f server.js
+                         exit
+                         EOF"""
+                    }
+                }
+             }
+         }
+        stage('copy files to prod-server') {
+                input {
+                message "shall we deploy to prod ?"
+                ok "yes please"
+                }
+            steps {
+              script {
+                sshagent(['deployserver-key-cred']) {
+                      //sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Nodejs-CI-CD/*  ec2-user@44.202.218.162:/var/www/html/'
+                      sh 'rsync -avz -e ssh /var/lib/jenkins/workspace/Nodejs-CI-CD/* ec2-user@44.202.218.162:/var/www/html/'
+                 }
+             }
+        }
+        }
+       stage('deploy to prod server') {
+            steps {
+                script {
+                   sshagent(['deployserver-key-cred']) {
+                       sh """ssh ec2-user@44.202.218.162 << EOF
+                         cd /var/www/html/project
+                         npm install
+                         npm i -g pm2
+                         pm2 start -f server.js
+                         exit
+                         EOF"""
+                    }
+                }
+             }
+         }
+     }
+   }
+
+now check your browser with ip/employee
+https://tecadmin.net/apache-frontend-proxy-nodejs/
+
+
+=========================================================================================================
+LARAVEL APP CI/CD using Jenkins
+================================
+
+https://techviewleo.com/install-jenkins-server-on-amazon-linux/ - install jenkins on amazon linux 2
+
+https://gist.github.com/ErxrilOwl/0287df71d994ba3b3ebcec3a6e4e27bc - deploy app on amazon ec2 server
+
+Jenkins 2.345
+
+500 internal server ki meaning vi httpd.conf lo document root ki /var/www/html/public path evvali
+
+==============================
+
+pipeline { 
+    agent any 
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+         stage('Checkout code') { 
+            steps { 
+                git credentialsId: 'git-credentials', url: 'https://github.com/ebizzinfotechs/forum.git' 
+            }
+        }
+        stage('copy files to dev-server') { 
+            steps { 
+                sshagent(['deploy-user']) {
+               //sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Laravel-Application/*  ec2-user@13.127.173.141:/var/www/html/'
+               sh 'rsync -avz -e  ssh /var/lib/jenkins/workspace/Laravel-Application/* ec2-user@13.127.173.141:/var/www/html/'
+               
+         }
+            }
+        }
+      
+         stage('Build and deploy to stage') { 
+            steps { 
+                sshagent(['deploy-user']) {
+              sh """ssh -tt  ec2-user@13.127.173.141 << EOF
+                         cd /var/www/html
+                         sudo composer install --no-interaction
+                         php artisan migrate --force
+                         php artisan cache:clear
+                         php artisan config:cache
+                         exit
+                         EOF"""
+         }
+            }
+        }
+           stage('copy files to prod-server') {
+                input {
+                message "shall we deploy to prod ?"
+                ok "yes please"
+                }
+            steps { 
+                sshagent(['deploy-user']) {
+               //sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Laravel-Application/*  ec2-user@65.2.153.114:/var/www/html/'
+                sh 'rsync -avz -e ssh /var/lib/jenkins/workspace/Laravel-Application/* ec2-user@65.2.153.114:/var/www/html/'
+         }
+            }
+        }
+          stage('Build and deploy to prod') {
+            steps { 
+                sshagent(['deploy-user']) {
+              sh """ssh -tt  ec2-user@65.2.153.114 << EOF
+                         cd /var/www/html
+                         sudo composer install --no-interaction
+                         php artisan migrate --force
+                         php artisan cache:clear
+                         php artisan config:cache
+                         exit
+                         EOF"""
+         }
+            }
+        }
+        //       stage('Test'){
+        //     steps {
+        //                   sshagent(['deploy-user']) {
+        //       sh """ssh -tt  ec2-user@65.0.131.206 << EOF
+        //                  cd /var/www/html
+        //                  sudo ./vendor/bin/phpunit
+        //                  exit
+        //                  EOF"""
+        //  }
+                 
+        //     }
+        // }
+     
+     
+    }
+}
+
+Issues faced while setup laravel ci/cd setup
+====================================================================================================
+https://greggborodaty.com/amazon-linux-2-upgrading-from-php-7-2-to-php-7-4/ -  upgrade php version
+https://bobcares.com/blog/laravel-vendor-folder-missing/ - vendor folder mising
+https://gist.github.com/ErxrilOwl/0287df71d994ba3b3ebcec3a6e4e27bc - to deploy website in amazon linux 2 very imp
+How can I run composer without user interaction? - composer install --no-interaction 
+permissions for storage and logs - sudo chmod o+w ./storage/ -R
+https://stackoverflow.com/questions/38752274/aws-issue-the-requested-url-was-not-found-on-this-server - if url says 404 not found error reolve with this link - vvimp
+
+===================================================================
+
+if composer says bash composer cmnd not found
+cd ~
+   49  sudo curl -sS https://getcomposer.org/installer | sudo php
+   50  sudo mv composer.phar /usr/local/bin/composer
+   51  sudo ln -s /usr/local/bin/composer /usr/bin/composer
+   52  composer install --optimize-autoloader --no-dev
+   53  sudo composer install
+   54  sudo composer self-update
+
+===================================================================================
 PROCESS OF CI/CD PIPELINES FOR PYTHON DJANGO APP WITH POSTGRESQL:
 
 -> Install postgresql,nginx
@@ -109,7 +526,7 @@ pipeline {
 Webhook URL: http://43.204.228.159:8080/github-webhook/
 
 ISSUE i have been facing while setup ci/cd:
-===========================================
+==========================================================================================================================
 BADDRREQUEST400 error ki sol - .env file lo allowdhosts ki dev and prod ips evvali like ALLOWED_HOSTS=3.108.219.226,13.233.49.162
 https://stackoverflow.com/questions/68588118/allowed-hosts-not-found-declare-it-as-envvar-or-define-a-default-value
 https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04
@@ -122,7 +539,7 @@ move to source env and install - pip install python-decouple
 and restart gunicorn
 
 gunicorn.socket: Failed with result 'service-start-limit-hit'.
-==============================
+=================================================================================================================================
 sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
 sudo systemctl status gunicorn
@@ -130,195 +547,3 @@ sudo systemctl status gunicorn
 Install all the requirements module under venv not in under normal root application
 
 Need to restart nginx and gunicron as well as everytime
-
-
-
-
-
-
-Nodejs api CRUD apps:
-=====================
-https://github.com/CodAffection/Node.js-Expess-MongoDB-CRUD - working
-
-Laravel api CRUD apps:
-=======================
-https://github.com/SinghDigamber/laravel-crud-app.git - working
-
-Python api CRUD apps:
-=====================
-https://github.com/CodAffection/Django-CRUD-Operations.git - working
-
-
-Deploy Nodejs-mongo API Applications on AWS servers:
-
--> setup aws ec2 amazon linux
--> install nodejs and mongodb
--> make some db settings in mongo config file
--> clone the project to /var/www/html/
--> create db manually in ROBO3t
--> npm install //to install dependecies
--> node server.js //to run app on 80
-If you want to run app dynamically use pm2 
--> npm i -g pm2 //install pm2 dependencies
--> pm2 start server.js //start the server with end process
-
-For nodejs app deployment on ec2 no need to change any httpd config files from server side
-
-
-Deploy Laravel API Applications on AWS servers:
-
--> setup aws ec2 amazon linux
--> Setup LAMP server
--> make some changes in httpd conf file
--> clone the project form github
--> setup composer with link and install composer
--> db migrate and key geenerate
--> give permissions to storage file
--> access website in browser
-
-URL : http://ip/students/create
-
-Create Student: http://127.0.0.1:8000/students/create
-
-Students List: http://127.0.0.1:8000/students
-
-IMP DOC:
-https://www.hackerxone.com/2021/04/28/install-composer-amazon-linux-running-ec2/
-
-Deploy Django python API CRUD APP in local
-
-python manage.py migrate
-
-create tables in db - python manage.py sqlmigrate employee_register 0001
-not working now, run below commands to make work perfectly
-
-IMP commands to run postgresql:
-==============================
--> pg_ctl.exe restart -D  "C:\Program Files\PostgreSQL\14\data" - For server starting
--> psql -U postgres -h localhost employeedb - login to postgresql db 
--> \list - list of dbs
--> \dt - list of tables
--> INSERT INTO employee_register_position (id, title) VALUES (4, 'Programming Python'); - insert data to table
-
-
-pm2 command golbal ga run avvali antey - means not root user $ - 
-also solution for Eaccess permission denied issue
-
-sudo apt-get install libcap2-bin
-
-sudo setcap cap_net_bind_service=+ep /usr/local/node 
-
-
-    script {
-                sshagent(['deployserver-key-cred']) {
-                      sh 'rm -rf /home/ubuntu/employee_project'
-                      sh 'scp -r /var/lib/jenkins/workspace/python-cicd/* ubuntu@54.165.70.116:/home/ubuntu/employee_project/'
-                      //sh 'rsync -avz -e ssh /var/lib/jenkins/workspace/python-cicd/* ubuntu@54.165.70.116:/home/ubuntu/employee_project/'
-         }
-                }
-
-
-
-NODEJS CRUD API CI/CD PIPLEINE USINF JENKINS:(Version2)
-============================================
-setup node and mongodb in both servers
-setup pm2 in both server
-setup jenkins server
-go to stage and prod servers seperately and do some below settings in conf files
-vi /etc/httpd/conf.d/demo.conf
-<VirtualHost *:80>
-      ServerName 44.204.20.226
-
-      ProxyPreserveHost On
-      ProxyPass / http://44.204.20.226:3000/
-      ProxyPassReverse / http://44.204.20.226:3000/
-
-It means app internally run on 3000 port
-but depends upon above conf, app will be show on port 80 to outside world
-neeed to setup tis conf in both stage and prod servers
-then restart the httpd service
-
-now setup pipleine job in jenkins
-add below code to deploy automatically from jenkins to stage-> stage-> prod server
-
-pipeline {
-    agent any
-    environment {
-        // comment added
-         APPLICATION = 'app'
-         ENVIRONMENT = 'dev'
-         MAINTAINER_NAME = 'jenkins'
-         MAINTAINER_EMAIL = 'jenkins@email.com'
-    }
-    stages {
-        stage('clone repository') {
-            steps {
-                git credentialsId: 'git-credentials', url: 'https://github.com/svk1427/Node.js-Expess-MongoDB-CRUD.git'
-             }
-         }
-        stage('Build'){
-             steps {
-                 nodejs(nodeJSInstallationName: 'nodejs15.2.1') {
-                 sh 'npm install'
-                }
-            }
-        }
-        stage('copy to files to stage server') {
-             steps {
-                 script {
-                     sshagent(['deployserver-key-cred']) {
-                        //sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Nodejs-CI-CD/*  ec2-user@44.204.20.226:/var/www/html/'
-                        sh 'rsync -avz -e ssh /var/lib/jenkins/workspace/Nodejs-CI-CD/* ec2-user@44.204.20.226:/var/www/html/'
-                    }
-                 }
-             }
-         }
-        stage('deploy to stage server') {
-            steps {
-                script {
-                   sshagent(['deployserver-key-cred']) {
-                         sh """ssh ec2-user@44.204.20.226 << EOF
-                         cd /var/www/html/project
-                         npm install
-                         npm i -g pm2
-                         pm2 start -f server.js
-                         exit
-                         EOF"""
-                    }
-                }
-             }
-         }
-        stage('copy files to prod-server') {
-                input {
-                message "shall we deploy to prod ?"
-                ok "yes please"
-                }
-            steps {
-              script {
-                sshagent(['deployserver-key-cred']) {
-                      //sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Nodejs-CI-CD/*  ec2-user@44.202.218.162:/var/www/html/'
-                      sh 'rsync -avz -e ssh /var/lib/jenkins/workspace/Nodejs-CI-CD/* ec2-user@44.202.218.162:/var/www/html/'
-                 }
-             }
-        }
-        }
-       stage('deploy to prod server') {
-            steps {
-                script {
-                   sshagent(['deployserver-key-cred']) {
-                       sh """ssh ec2-user@44.202.218.162 << EOF
-                         cd /var/www/html/project
-                         npm install
-                         npm i -g pm2
-                         pm2 start -f server.js
-                         exit
-                         EOF"""
-                    }
-                }
-             }
-         }
-     }
-   }
-
-now check your browser with ip/employee
-https://tecadmin.net/apache-frontend-proxy-nodejs/
