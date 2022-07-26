@@ -351,7 +351,23 @@ pipeline {
 now check your browser with ip/employee
 https://tecadmin.net/apache-frontend-proxy-nodejs/
 
+Issues i was faced while i was setup nodejs ci/cd app:
+-> permissions for port 80 means dont build and deploy app with port 80
+-> neeed to deploy and build code and app with 3000 port in app/index.js file
+-> need to create a file in 
+go to stage and prod servers seperately and do some below settings in conf files
+vi /etc/httpd/conf.d/demo.conf
+<VirtualHost *:80>
+      ServerName 44.204.20.226
 
+      ProxyPreserveHost On
+      ProxyPass / http://44.204.20.226:3000/
+      ProxyPassReverse / http://44.204.20.226:3000/
+
+It means app internally run on 3000 port
+but depends upon above conf, app will be show on port 80 to outside world
+neeed to setup tis conf in both stage and prod servers
+then restart the httpd service
 =========================================================================================================
 LARAVEL APP CI/CD using Jenkins (Version1)
 ================================
