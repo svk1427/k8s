@@ -196,7 +196,55 @@ pm2 command golbal ga run avvali antey - means not root user $ -
 also solution for Eaccess permission denied issue
 
 sudo apt-get install libcap2-bin
-
+--------------------------------------------------------------
+NODEJS CRUD API CI/CD PIPLEINE USINF JENKINS:(Version1)
+------------------------------------------------------------------
+pipeline {
+    agent any
+    environment {
+        // comment added
+         APPLICATION = 'app'
+         ENVIRONMENT = 'dev'
+         MAINTAINER_NAME = 'jenkins'
+         MAINTAINER_EMAIL = 'jenkins@email.com'
+    }
+    stages {
+         stage('clone repository') {
+             steps {
+                git credentialsId: 'github-credentials', url: 'https://github.com/ebizzinfotechs/nodejs-app-mss.git'
+             }
+         }
+          stage('Build'){
+             steps {
+                 nodejs(nodeJSInstallationName: 'nodejs15.2.1') {
+                 sh 'npm install'
+    }
+          }
+    }
+         stage('copy to remote') {
+             steps {
+                 script {
+                     sshagent(credentials : ['deploy-user']) {
+                        sh 'scp -r /var/lib/jenkins/workspace/Nodejs-demo/*  ec2-user@3.108.236.230:/home/ec2-user/'
+                    }
+                 }
+             }
+         }
+          stage('deploy to server') {
+             steps {
+                 script {
+                     sshagent(credentials : ['deploy-user']) {
+                       sh """ssh -tt  ec2-user@3.108.236.230 << EOF 
+                         pm2 restart -f app.js
+                         exit
+                         EOF"""
+                    }
+                 }
+             }
+         }
+}
+}
+---------------------------------------------------------------
 NODEJS CRUD API CI/CD PIPLEINE USINF JENKINS:(Version2)
 ============================================
 setup node and mongodb in both servers
@@ -303,7 +351,7 @@ https://tecadmin.net/apache-frontend-proxy-nodejs/
 
 
 =========================================================================================================
-LARAVEL APP CI/CD using Jenkins
+LARAVEL APP CI/CD using Jenkins (Version1)
 ================================
 
 https://techviewleo.com/install-jenkins-server-on-amazon-linux/ - install jenkins on amazon linux 2
@@ -447,7 +495,7 @@ NOTE: Whenever your app is running properly on ec2 then just delete taht project
 
 NOTE: Whenever pipeline running without stopping like ...... sol is remove tt from the deploy section.(compare laravel and python ci/cd script for getting idea)
 
-Pipeline code for setup CI/CD for python django application with postgresql:
+Pipeline code for setup CI/CD for python django application with postgresql:(version1)
 pipeline {
     agent any 
     stages {
@@ -525,7 +573,7 @@ pipeline {
 
 Webhook URL: http://43.204.228.159:8080/github-webhook/
 
-ISSUE i have been facing while setup ci/cd:
+ISSUE i have been facing while setup python app ci/cd pipeline:
 ==========================================================================================================================
 BADDRREQUEST400 error ki sol - .env file lo allowdhosts ki dev and prod ips evvali like ALLOWED_HOSTS=3.108.219.226,13.233.49.162
 https://stackoverflow.com/questions/68588118/allowed-hosts-not-found-declare-it-as-envvar-or-define-a-default-value
