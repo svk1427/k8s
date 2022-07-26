@@ -613,3 +613,18 @@ sudo systemctl status gunicorn
 Install all the requirements module under venv not in under normal root application
 
 Need to restart nginx and gunicron as well as everytime
+========================================================
+
+How to Load pressure on ec2
+==============================
+
+sudo amazon-linux-extras install epel -y
+sudo yum install stress -y
+
+sudo stress --cpu 8 --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep -m 1
+
+how to decrease the load after increasing
+
+sudo stress --cpu 1 --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep -m 1
+
+how to check cpu utilization percentage in linux - top
