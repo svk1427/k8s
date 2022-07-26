@@ -1,3 +1,5 @@
+-> Setup python app in ec2 and laravelapp ci/cd code, pythonapp ci/cd code remaining
+
 Nodejs api CRUD apps:
 =====================
 https://github.com/CodAffection/Node.js-Expess-MongoDB-CRUD - working
